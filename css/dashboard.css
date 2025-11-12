@@ -503,7 +503,7 @@ text-transform: uppercase;
     left: 300px;
   }
     .cardBox {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
@@ -551,7 +551,7 @@ text-transform: uppercase;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
   padding: 10px;
-    margin-right: 20px;
+margin-right: 20px;
 }
 .topCard {
   background: #fff;
@@ -565,19 +565,18 @@ text-transform: uppercase;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   color: black;
 }
-
-
-
-
-
-
+.card__content{
+   align-items: center;
+    justify-content: center;
+}
 
 
 /* ===== Responsive ===== */
 @media (max-width: 992px) {
   .cardBox {
     grid-template-columns: repeat(2, 1fr);
-  }
+  } 
+  
 }
 
 @media (max-width: 960px) {
@@ -606,6 +605,12 @@ text-transform: uppercase;
   }
 
   .cardBox {
-    grid-template-columns: 2fr;
+    grid-template-columns: 1fr;
   }
+  .topContent {
+  
+  grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+    padding-inline-start: 16px; /* separates the topContent from the left side */
+}
 }

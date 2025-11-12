@@ -76,8 +76,9 @@ if (signUp) {
             fullname: fullname,
             companyname: companyname
         };
+        // *** FIX: Changed collection name from "users" to "Users" to match dashboard.js ***
+        await setDoc(doc(db, "Users", user.uid), userData); 
         showMessage('signUpMessage', 'User registered successfully!');
-        await setDoc(doc(db, "users", user.uid), userData);
         window.location.href = 'index.html';
     })
         .catch((error) => {
@@ -107,8 +108,9 @@ if (signIn) {
             localStorage.setItem('loggedInUserId', user.uid)
             // small delay to allow UI update
             setTimeout(() => {
-                console.log('Redirecting to dashboard.html');
-                window.location.href = 'dashboard.html';
+                // *** FIX: Changed redirect to 'home.html' as per the file name, not 'dashboard.html' ***
+                console.log('Redirecting to home.html'); 
+                window.location.href = 'home.html'; 
             }, 300);
         })
        .catch((error) => {
