@@ -4,26 +4,17 @@ import MetricCard from '../../components/MetricCard'
 import ApexChart from '../../components/Chart'
 import Dropdown from '../../components/Dropdown'
 import { useSidebar } from '../../contexts/SidebarContext'
+import { get_pages,fetchPage } from '../../services/pages'
 
 export default function Home() {
   const { toggleSidebar } = useSidebar()
+<<<<<<< HEAD
   const [selectedFilter, setSelectedFilter] = useState('All') 
+=======
+  const [filterOptions, setFilterOptions] = useState([])
+  const [selectedFilter, setSelectedFilter] = useState('All') // State for the filter
+>>>>>>> c46a3551696ae349eba27b1dbe953b62d6cebdb3
 
-  const filterOptions = [
-    'All',
-    'Bel-Ice',
-    'BelCola',
-    'Bel-Aqua',
-    'Bel-Beverages',
-    'BelPak',
-    'Bel7Star',
-    'Blowpak',
-    'Cricket',
-    'Prime Insurance',
-    'Moov',
-    'Novo',
-    'Holy Insecticide',
-  ]
 
   useEffect(() => {
     // Load ionicons
@@ -35,7 +26,23 @@ export default function Home() {
     return () => {
       document.head.removeChild(script)
     }
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    const fetchPages = async () => {
+      try {
+        const response = await get_pages();
+        if (response) {
+          setFilterOptions(response);
+        }
+      } catch (error) {
+        console.error("Failed to fetch pages:", error);
+      }
+    };
+
+    fetchPages();
+  }, []);
+
 
   const handleDateRangeChange = (range) => {
     console.log('Date range changed:', range)
