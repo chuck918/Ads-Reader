@@ -1,6 +1,6 @@
 import Chart from 'react-apexcharts'
 
-export default function ApexChart({ options = {}, series = [], type = 'area', height = 350 }) {
+export default function ApexChart({ options = {}, series = [], type = 'line', height = 350 }) {
   const defaultOptions = {
     chart: {
       height: height,
@@ -21,8 +21,7 @@ export default function ApexChart({ options = {}, series = [], type = 'area', he
     },
     tooltip: {
       x: {
-        // FIXED: Removed fixed format ('dd/MM/yy HH:mm') 
-        // to allow parent component to control granularity-based formatting.
+        
       },
     },
     ...options,

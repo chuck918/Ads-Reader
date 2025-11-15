@@ -4,12 +4,63 @@ import MetricCard from '../../components/MetricCard'
 import ApexChart from '../../components/Chart'
 import Dropdown from '../../components/Dropdown'
 import { useSidebar } from '../../contexts/SidebarContext'
-import { get_pages,fetchPage } from '../../services/pages'
+import { get_pages, fetchPage } from '../../services/pages'
+
+  
+const defaultChartData = {
+  series: [
+    {
+      name: 'series1',
+      data: [31, 40, 28, 51, 42, 109, 100],
+    },
+    {
+      name: 'series2',
+      data: [11, 32, 45, 32, 34, 52, 41],
+    },
+  ],
+  xaxis: {
+    type: 'datetime',
+    categories: [
+      '2018-09-19T00:00:00.000Z',
+      '2018-09-19T01:30:00.000Z',
+      '2018-09-19T02:30:00.000Z',
+      '2018-09-19T03:30:00.000Z',
+      '2018-09-19T04:30:00.000Z',
+      '2018-09-19T05:30:00.000Z',
+      '2018-09-19T06:30:00.000Z',
+    ],
+  },
+};
+const defaultChartDatas = {
+  series: [
+    // {
+    //   name: 'series1',
+    //   data: [31, 40, 28, 51, 42, 109, 100],
+    // },
+    {
+      name: 'series2',
+      data: [11, 32, 45, 32, 34, 52, 41],
+    },
+  ],
+  xaxis: {
+    type: 'datetime',
+    categories: [
+      '2018-09-19T00:00:00.000Z',
+      '2018-09-19T01:30:00.000Z',
+      '2018-09-19T02:30:00.000Z',
+      '2018-09-19T03:30:00.000Z',
+      '2018-09-19T04:30:00.000Z',
+      '2018-09-19T05:30:00.000Z',
+      '2018-09-19T06:30:00.000Z',
+    ],
+  },
+};
 
 export default function Home() {
   const { toggleSidebar } = useSidebar()
   const [filterOptions, setFilterOptions] = useState([])
   const [selectedFilter, setSelectedFilter] = useState('All') 
+  const [chartData, setChartData] = useState(defaultChartData);
 
 
   useEffect(() => {
@@ -39,6 +90,36 @@ export default function Home() {
     fetchPages();
   }, []);
 
+  useEffect(() => {
+    const loadPageData = async () => {
+      if (selectedFilter === 'All') {
+        
+        setChartData(defaultChartData);
+        return;
+      }
+      
+      try {
+        
+        const response = await fetchPage(selectedFilter); 
+        
+        if (response && response.series && response.xaxis) {
+          
+          setChartData(response);
+        } else {
+          
+          console.warn(`No valid data received for filter: ${selectedFilter}. Using default data.`);
+          setChartData(defaultChartData);
+        }
+      } catch (error) {
+        console.error(`Failed to fetch data for ${selectedFilter}:`, error);
+       
+        setChartData(defaultChartData);
+      }
+    };
+
+    loadPageData();
+  }, [selectedFilter]);
+
 
   const handleDateRangeChange = (range) => {
     console.log('Date range changed:', range)
@@ -48,33 +129,9 @@ export default function Home() {
   const handleFilterSelect = (filter) => { // Handler for dropdown selection
     setSelectedFilter(filter)
     console.log('Filter selected:', filter)
-    // TODO: Fetch data based on the selected filter
   }
 
-  const chartOptions = {
-    series: [
-      {
-        name: 'series1',
-        data: [31, 40, 28, 51, 42, 109, 100],
-      },
-      {
-        name: 'series2',
-        data: [11, 32, 45, 32, 34, 52, 41],
-      },
-    ],
-    xaxis: {
-      type: 'datetime',
-      categories: [
-        '2018-09-19T00:00:00.000Z',
-        '2018-09-19T01:30:00.000Z',
-        '2018-09-19T02:30:00.000Z',
-        '2018-09-19T03:30:00.000Z',
-        '2018-09-19T04:30:00.000Z',
-        '2018-09-19T05:30:00.000Z',
-        '2018-09-19T06:30:00.000Z',
-      ],
-    },
-  }
+
 
   return (
     <div>
@@ -110,33 +167,37 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 p-2.5 mr-5 mt-2.5">
           <div className="bg-white h-[50vh] p-5 rounded-2xl shadow-sm transition-all hover:shadow-md">
             <div>
-              <h2 className="text-xl font-semibold mb-4">Top Performing Content</h2>
+              <h2 className="text-xl font-semibold mb-4">Total Reach Vrs Total Engagement</h2>
               <div className="mt-4">
-                <ApexChart options={chartOptions} type="area" height={450} />
+                {/* Use dynamic chartData */}
+                <ApexChart options={chartData} series={chartData.series} type="bar" height={420} />
               </div>
             </div>
           </div>
           <div className="bg-white h-[50vh] p-5 rounded-2xl shadow-sm transition-all hover:shadow-md">
             <div>
-              <h2 className="text-xl font-semibold mb-4">Summary</h2>
+              <h2 className="text-xl font-semibold mb-4">Total Reach</h2>
               <div className="mt-4">
-                <ApexChart options={chartOptions} type="area" height={450} />
+                {/* Use dynamic chartData */}
+                <ApexChart options={defaultChartDatas} series={defaultChartDatas.series} type="area" height={420} />
               </div>
             </div>
           </div>
           <div className="bg-white h-[50vh] p-5 rounded-2xl shadow-sm transition-all hover:shadow-md">
             <div>
-              <h2 className="text-xl font-semibold mb-4">Chart</h2>
+              <h2 className="text-xl font-semibold mb-4">Total Engagement </h2>
               <div className="mt-4">
-                <ApexChart options={chartOptions} type="area" height={450} />
+                {/* Use dynamic chartData */}
+                <ApexChart options={defaultChartDatas} series={defaultChartDatas.series} type="area" height={420} />
               </div>
             </div>
           </div>
           <div className="bg-white h-[50vh] p-5 rounded-2xl shadow-sm transition-all hover:shadow-md">
             <div>
-              <h2 className="text-xl font-semibold mb-4">Chart</h2>
+              <h2 className="text-xl font-semibold mb-4">Total Spend</h2>
               <div className="mt-4">
-                <ApexChart options={chartOptions} type="area" height={450} />
+                {/* Use dynamic chartData, overriding type to line */}
+                <ApexChart options={defaultChartDatas} series={defaultChartDatas.series} type="line" height={420} />
               </div>
             </div>
           </div>
