@@ -313,6 +313,36 @@ export default function Analytics() {
             <div>
               <h2 className="text-xl font-semibold mb-4">Engagement Over Time</h2>
               <div className="mt-4">
+                <div id="line">
+                  <ApexChart 
+                    options={chartOptions} 
+                    series={chartOptions.series}
+                    type="line" 
+                    height={420} 
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* 4. Line Chart (Second Instance) */}
+          <div className="bg-white h-[50vh] p-5 rounded-2xl shadow-sm transition-all hover:shadow-md">
+            <div>
+              <h2 className="text-xl font-semibold mb-4">Spends</h2>
+              <div id="area">
+                <ApexChart
+                  options={{ ...chartOptions, chart: { type: 'line' } }}
+                  series={chartOptions.series}
+                  type="area"
+                  height={420}
+                />
+              </div>
+            </div>
+          </div>
+          {/* 5. Area Chart */}
+          <div className="bg-white h-[50vh] p-5 rounded-2xl shadow-sm transition-all hover:shadow-md">
+            <div>
+              <h2 className="text-xl font-semibold mb-4">Page Growth</h2>
+              <div className="mt-4">
                 <div id="area">
                   <ApexChart 
                     options={chartOptions} 
@@ -324,24 +354,9 @@ export default function Analytics() {
               </div>
             </div>
           </div>
-          {/* 4. Line Chart (Second Instance) */}
           <div className="bg-white h-[50vh] p-5 rounded-2xl shadow-sm transition-all hover:shadow-md">
             <div>
-              <h2 className="text-xl font-semibold mb-4">Spends</h2>
-              <div id="line">
-                <ApexChart
-                  options={{ ...chartOptions, chart: { type: 'line' } }}
-                  series={chartOptions.series}
-                  type="line"
-                  height={420}
-                />
-              </div>
-            </div>
-          </div>
-          {/* 5. Area Chart */}
-          <div className="bg-white h-[50vh] p-5 rounded-2xl shadow-sm transition-all hover:shadow-md">
-            <div>
-              <h2 className="text-xl font-semibold mb-4">Page Growth</h2>
+              <h2 className="text-xl font-semibold mb-4">Views Over Time</h2>
               <div className="mt-4">
                 <div id="area">
                   <ApexChart 

@@ -53,7 +53,7 @@ export default function Sidebar({ onStateChange, onToggle }) {
   return (
     <>
       <aside
-        className={`fixed top-0 left-0 h-screen w-[260px] bg-sidebar p-6 shadow-lg transition-all duration-300 z-[100] flex flex-col overflow-x-hidden ${
+        className={`fixed top-0 left-0 h-screen w-[260px] bg-yellow-500 p-6 shadow-lg transition-all duration-300 z-[100] flex flex-col overflow-x-hidden ${
           isMobile
             ? isClosed
               ? '-translate-x-full'
@@ -68,7 +68,7 @@ export default function Sidebar({ onStateChange, onToggle }) {
             src={logoImage}
             alt="Logo"
             className={`transition-all ${
-              isClosed && !isMobile ? 'w-[60px] h-[60px] mx-auto' : 'w-20 h-20'
+              isClosed && !isMobile ? 'w-[60px] h-[60px] mx-auto' : 'w-28 h-28 mx-0'
             }`}
           />
         </div>
