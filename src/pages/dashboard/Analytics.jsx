@@ -6,6 +6,8 @@ import ApexChart from '../../components/Chart'
 import { useSidebar } from '../../contexts/SidebarContext'
 import { get_pages, fetchPage } from '../../services/pages'
 
+const platformOptions = ['Facebook', 'Instagram']
+
 const chartOptions = {
     series: [
       {
@@ -212,6 +214,7 @@ export default function Analytics() {
   const [filterOptions, setFilterOptions] = useState([])
   const [selectedFilter, setSelectedFilter] = useState('All') 
   const [chartData, setChartData] = useState(chartOptions);
+  const [selectedPlatform, setSelectedPlatform] = useState(platformOptions[0])
 
   useEffect(() => {
     // Load ionicons
@@ -249,7 +252,7 @@ export default function Analytics() {
         }
         
         try {
-          
+          console.log(`Loading analytics for ${selectedFilter} on ${selectedPlatform}`)
           const response = await fetchPage(selectedFilter); 
           
           if (response && response.series && response.xaxis) {
@@ -268,7 +271,7 @@ export default function Analytics() {
       };
   
       loadPageData();
-    }, [selectedFilter]);
+    }, [selectedFilter, selectedPlatform]);
   
   
 
@@ -281,9 +284,14 @@ export default function Analytics() {
     console.log('Filter selected:', filter)
   }
 
+  const handlePlatformSelect = (platform) => {
+    setSelectedPlatform(platform)
+    console.log('Platform selected:', platform)
+  }
+
   return (
     <div>
-      <div className="fixed top-0 left-[260px] w-[calc(100%-260px)] h-[60px] bg-transparent backdrop-blur-sm flex justify-between items-center gap-2 px-4 shadow-md z-[2000] transition-all duration-300 max-md:left-0 max-md:w-full">
+      <div className="fixed top-0 left-[260px] w-[calc(100%-260px)] h-[60px] bg-transparent backdrop-blur-sm flex justify-end items-center gap-2 px-4 shadow-md z-[2000] transition-all duration-300 max-md:left-0 max-md:w-full">
        <button
         onClick={toggleSidebar}
         className="bg-transparent border-none p-2 rounded text-gray-800 hover:bg-gray-100 cursor-pointer md:hidden"
@@ -291,13 +299,21 @@ export default function Analytics() {
       >
         <span className="material-symbols-outlined text-2xl">menu</span>
       </button>
-        <Dropdown
-          label="Page Selector"
-          options={filterOptions}
-          onSelect={handleFilterSelect}
-          selectedValue={selectedFilter}
-        />
-        <DateRangePicker onDateRangeChange={handleDateRangeChange} />
+        <div className="flex items-center gap-2">
+          <Dropdown
+            label="Page Selector"
+            options={filterOptions}
+            onSelect={handleFilterSelect}
+            selectedValue={selectedFilter}
+          />
+          <Dropdown
+            label="Platform"
+            options={platformOptions}
+            onSelect={handlePlatformSelect}
+            selectedValue={selectedPlatform}
+          />
+          <DateRangePicker onDateRangeChange={handleDateRangeChange} />
+        </div>
       </div>
 
       <div className="p-2.5 mr-5">
@@ -305,7 +321,7 @@ export default function Analytics() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-2.5 p-2.5 mr-5">
           <MetricCard title="Total Views" value="1,504" icon="eye-outline" />
           <MetricCard title="Total Reach" value="284" icon="globe-outline" />
-          <MetricCard title="Total Impressions" value="284" icon="megaphone-outline" />
+          <MetricCard title="Total Engagement" value="284" icon="megaphone-outline" />
           <MetricCard title="Total Spend" value="$7,842" icon="cash-outline" />
         </div>
 

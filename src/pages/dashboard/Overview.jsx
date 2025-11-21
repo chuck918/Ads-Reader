@@ -6,6 +6,8 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { get_pages, fetchPage } from '../../services/pages'
 
+const platformOptions = ['Facebook', 'Instagram']
+
 const defaultTableData = [
   { month: 'January', reach: 1000, engagement: 500, spend: 2000, views: 5000 },
   { month: 'February', reach: 1200, engagement: 600, spend: 2500, views: 6000 },
@@ -16,6 +18,7 @@ export default function Overview() {
   const [filterOptions, setFilterOptions] = useState([])
   const [selectedFilter, setSelectedFilter] = useState('All')
   const [tableData, setTableData] = useState(defaultTableData)
+  const [selectedPlatform, setSelectedPlatform] = useState(platformOptions[0])
   
   useEffect(() => {
     const fetchPages = async () => {
@@ -40,7 +43,7 @@ export default function Overview() {
       }
       
       try {
-        
+        console.log(`Loading data for ${selectedFilter} on ${selectedPlatform}`)
         const response = await fetchPage(selectedFilter); 
         if (response && Array.isArray(response)) {
           setTableData(response)
@@ -55,7 +58,7 @@ export default function Overview() {
     };
 
     loadPageData();
-  }, [selectedFilter]);
+  }, [selectedFilter, selectedPlatform]);
 
 
 
@@ -70,6 +73,12 @@ export default function Overview() {
     setSelectedFilter(filter)
     console.log('Filter selected:', filter)
     // TODO: Fetch table data filtered by the selected filter
+  }
+
+  const handlePlatformSelect = (platform) => {
+    setSelectedPlatform(platform)
+    console.log('Platform selected:', platform)
+    // TODO: Fetch data filtered by platform
   }
 
  
@@ -94,7 +103,7 @@ export default function Overview() {
   return (
     <div>
       {/* Header Bar */}
-      <div className="fixed top-0 left-[260px] w-[calc(100%-260px)] h-[60px] bg-transparent backdrop-blur-sm flex justify-between items-center gap-2 px-4 shadow-md z-[2000] transition-all duration-300 max-md:left-0 max-md:w-full">
+      <div className="fixed top-0 left-[260px] w-[calc(100%-260px)] h-[60px] bg-transparent backdrop-blur-sm flex justify-end items-center gap-2 px-4 shadow-md z-[2000] transition-all duration-300 max-md:left-0 max-md:w-full">
         <button
         onClick={toggleSidebar}
         className="bg-transparent border-none p-2 rounded text-gray-800 hover:bg-gray-100 cursor-pointer md:hidden"
@@ -103,13 +112,21 @@ export default function Overview() {
         <span className="material-symbols-outlined text-2xl">menu</span>
         </button>
         
-        <Dropdown
-          label="Page Selector"
-          options={filterOptions}
-          onSelect={handleFilterSelect}
-          selectedValue={selectedFilter}
-        />
-        <DateRangePicker onDateRangeChange={handleDateRangeChange} />
+        <div className="flex items-center gap-2">
+          <Dropdown
+            label="Page Selector"
+            options={filterOptions}
+            onSelect={handleFilterSelect}
+            selectedValue={selectedFilter}
+          />
+          <Dropdown
+            label="Platform"
+            options={platformOptions}
+            onSelect={handlePlatformSelect}
+            selectedValue={selectedPlatform}
+          />
+          <DateRangePicker onDateRangeChange={handleDateRangeChange} />
+        </div>
       </div>
 
       <div className="p-5">

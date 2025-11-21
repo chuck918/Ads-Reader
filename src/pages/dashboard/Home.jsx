@@ -7,6 +7,8 @@ import { useSidebar } from '../../contexts/SidebarContext'
 import { get_pages, fetchPage } from '../../services/pages'
 
   
+const platformOptions = ['Facebook', 'Instagram']
+
 const defaultChartData = {
   series: [
     {
@@ -64,6 +66,7 @@ export default function Home() {
   const [filterOptions, setFilterOptions] = useState([])
   const [selectedFilter, setSelectedFilter] = useState('All') 
   const [chartData, setChartData] = useState(defaultChartData);
+  const [selectedPlatform, setSelectedPlatform] = useState(platformOptions[0])
 
 
   useEffect(() => {
@@ -102,7 +105,7 @@ export default function Home() {
       }
       
       try {
-        
+        console.log(`Loading data for ${selectedFilter} on ${selectedPlatform}`)
         const response = await fetchPage(selectedFilter); 
         
         if (response && response.series && response.xaxis) {
@@ -121,7 +124,7 @@ export default function Home() {
     };
 
     loadPageData();
-  }, [selectedFilter]);
+  }, [selectedFilter, selectedPlatform]);
 
 
   const handleDateRangeChange = (range) => {
@@ -134,11 +137,16 @@ export default function Home() {
     console.log('Filter selected:', filter)
   }
 
+  const handlePlatformSelect = (platform) => {
+    setSelectedPlatform(platform)
+    console.log('Platform selected:', platform)
+  }
+
 
 
   return (
     <div>
-    <div className="fixed top-0 left-[260px] w-[calc(100%-260px)] h-[60px] bg-transparent backdrop-blur-sm flex lg:justify-end items-center px-4 shadow-md z-[2000] transition-all duration-300 md:justify-between max-md:left-0 max-md:w-full">
+    <div className="fixed top-0 left-[260px] w-[calc(100%-260px)] h-[60px] bg-transparent backdrop-blur-sm flex lg:justify-end items-center px-4 shadow-md z-[2000] transition-all duration-300 md:justify-end max-md:left-0 max-md:w-full">
       <button
         onClick={toggleSidebar}
         className="bg-transparent border-none p-2 rounded text-gray-800 hover:bg-gray-100 cursor-pointer md:hidden"
@@ -155,6 +163,12 @@ export default function Home() {
             onSelect={handleFilterSelect}
             selectedValue={selectedFilter}
           />
+          <Dropdown
+            label="Platform"
+            options={platformOptions}
+            onSelect={handlePlatformSelect}
+            selectedValue={selectedPlatform}
+          />
           <DateRangePicker onDateRangeChange={handleDateRangeChange} />
       </div>
     </div>
@@ -163,7 +177,7 @@ export default function Home() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-2.5 p-2.5 mr-5">
           <MetricCard title="Total Views" value="1,504" icon="eye-outline" />
           <MetricCard title="Total Reach" value="284" icon="globe-outline" />
-          <MetricCard title="Total Impressions" value="284" icon="megaphone-outline" />
+          <MetricCard title="Total Engagement" value="284" icon="megaphone-outline" />
           <MetricCard title="Total Spend" value="$7,842" icon="cash-outline" />
         </div>
 

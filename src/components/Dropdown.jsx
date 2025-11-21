@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 
+const getOptionLabel = (option) => {
+  if (typeof option === 'string') return option
+  return option?.label || option?.name || option?.value || ''
+}
+
 export default function Dropdown({ label, options = [], onSelect, selectedValue }) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
@@ -27,13 +32,32 @@ export default function Dropdown({ label, options = [], onSelect, selectedValue 
     setIsOpen(false)
   }
 
+  const selectedLabel = (() => {
+    if (!selectedValue || selectedValue === 'Select an option') {
+      return selectedValue || label
+    }
+
+    const matchedOption = options.find((option) => {
+      if (typeof option === 'string') {
+        return option === selectedValue
+      }
+      return option?.value === selectedValue
+    })
+
+    if (matchedOption) {
+      return getOptionLabel(matchedOption)
+    }
+
+    return selectedValue || label
+  })()
+
   return (
     <div className="relative inline-block" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-2 py-2 px-4 bg-white border border-gray-300 rounded cursor-pointer text-sm text-gray-800 transition-all font-medium hover:bg-gray-50 hover:border-primary"
       >
-        {label}
+        {selectedLabel || label}
         <span className="material-symbols-outlined text-xl">arrow_drop_down</span>
       </button>
       {isOpen && (
