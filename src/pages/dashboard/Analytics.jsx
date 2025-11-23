@@ -383,7 +383,7 @@ export default function Analytics() {
             title="Download Dashboard as PDF"
           >
             <span className="material-symbols-outlined text-lg">download</span>
-            <span className="relative z-10">Download PDF</span>
+            <span className="relative z-10">Download</span>
           </button>
         </div>
       </div>
