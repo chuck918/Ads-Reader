@@ -9,8 +9,8 @@ import { get_pages, fetchPage } from '../../services/pages'
 const platformOptions = ['Facebook', 'Instagram']
 
 const defaultTableData = [
-  { month: 'January', reach: 1000, engagement: 500, spend: 2000, views: 5000 },
-  { month: 'February', reach: 1200, engagement: 600, spend: 2500, views: 6000 },
+  { date: 'January', reach: 1000, engagement: 500, spend: 2000, views: 5000 },
+  { date: 'February', reach: 1200, engagement: 600, spend: 2500, views: 6000 },
 ]
 
 export default function Overview() {
@@ -136,7 +136,7 @@ export default function Overview() {
               <thead>
                 <tr>
                   <th className="p-3 border border-gray-300 text-left bg-[#273c75] text-white">
-                    Month
+                    Date
                   </th>
                   <th className="p-3 border border-gray-300 text-left bg-[#273c75] text-white">
                     Reach
@@ -155,7 +155,7 @@ export default function Overview() {
               <tbody>
                 {tableData.map((row, idx) => (
                   <tr key={idx}>
-                    <td className="p-3 border border-gray-300">{row.month}</td>
+                    <td className="p-3 border border-gray-300">{row.date}</td>
                     <td className="p-3 border border-gray-300">{row.reach}</td>
                     <td className="p-3 border border-gray-300">{row.engagement}</td>
                     <td className="p-3 border border-gray-300">${row.spend}</td>
