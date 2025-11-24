@@ -215,7 +215,7 @@ export default function Analytics() {
   const { toggleSidebar } = useSidebar()
   const [filterOptions, setFilterOptions] = useState([])
   const [selectedFilter, setSelectedFilter] = useState('All') 
-  const [chartData, setChartData] = useState(chartOptions);
+  const [defaultChartData, setChartData] = useState(chartOptions);
   const [selectedPlatform, setSelectedPlatform] = useState(platformOptions[0])
   const dashboardRef = useRef(null)
 
@@ -408,7 +408,7 @@ export default function Analytics() {
                   options={{ ...chartOption, chart: { type: 'bar' } }}
                   series={chartOption.series}
                   type="bar"
-                  height={420}
+                  height={385}
                 />
               </div>
             </div>
@@ -422,7 +422,7 @@ export default function Analytics() {
                   options={{ ...chartOptions, chart: { type: 'line' } }}
                   series={chartOptions.series}
                   type="line"
-                  height={420}
+                  height={385}
                 />
               </div>
             </div>
@@ -437,7 +437,7 @@ export default function Analytics() {
                     options={chartOptions} 
                     series={chartOptions.series}
                     type="line" 
-                    height={420} 
+                    height={385} 
                   />
                 </div>
               </div>
@@ -452,7 +452,7 @@ export default function Analytics() {
                   options={{ ...chartOptions, chart: { type: 'line' } }}
                   series={chartOptions.series}
                   type="area"
-                  height={420}
+                  height={385}
                 />
               </div>
             </div>
@@ -467,7 +467,7 @@ export default function Analytics() {
                     options={chartOptions} 
                     series={chartOptions.series}
                     type="area" 
-                    height={420} 
+                    height={385} 
                   />
                 </div>
               </div>
@@ -482,7 +482,7 @@ export default function Analytics() {
                     options={chartOptions} 
                     series={chartOptions.series}
                     type="area" 
-                    height={420} 
+                    height={385} 
                   />
                 </div>
               </div>

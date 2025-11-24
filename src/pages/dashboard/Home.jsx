@@ -259,7 +259,7 @@ export default function Home() {
               <h2 className="text-xl font-semibold mb-4">Total Reach Vrs Total Engagement</h2>
               <div className="mt-4">
                 {/* Use dynamic chartData */}
-                <ApexChart options={chartData} series={chartData.series} type="bar" height={420} colors={chartData.color}   />
+                <ApexChart options={chartData} series={chartData.series} type="bar" height={385} colors={chartData.color}   />
               </div>
             </div>
           </div>
@@ -268,7 +268,7 @@ export default function Home() {
               <h2 className="text-xl font-semibold mb-4">Total Reach</h2>
               <div className="mt-4">
                 {/* Use dynamic chartData */}
-                <ApexChart options={defaultChartDatas} series={defaultChartDatas.series} type="area" height={420} />
+                <ApexChart options={defaultChartDatas} series={defaultChartDatas.series} type="area" height={385} />
               </div>
             </div>
           </div>
@@ -277,7 +277,7 @@ export default function Home() {
               <h2 className="text-xl font-semibold mb-4">Total Engagement </h2>
               <div className="mt-4">
                 {/* Use dynamic chartData */}
-                <ApexChart options={defaultChartDatas} series={defaultChartDatas.series} type="area" height={420} />
+                <ApexChart options={defaultChartDatas} series={defaultChartDatas.series} type="area" height={385} />
               </div>
             </div>
           </div>
@@ -286,7 +286,7 @@ export default function Home() {
               <h2 className="text-xl font-semibold mb-4">Total Spend</h2>
               <div className="mt-4">
                 {/* Use dynamic chartData, overriding type to line */}
-                <ApexChart options={defaultChartDatas} series={defaultChartDatas.series} type="line" height={420} />
+                <ApexChart options={defaultChartDatas} series={defaultChartDatas.series} type="line" height={385} />
               </div>
             </div>
           </div>
