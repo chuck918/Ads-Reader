@@ -16,12 +16,30 @@ export async function  get_pages() {
     const response = await api.get('/api/pages')
     const pages = response.data
     
-    const mappedPages = pages.map((page) => page.page_name )
+    const mappedPages = pages.map((page) => ({
+      id: page.id,
+      name: page.name
+    }));
     
-    console.log('Fetched pages:', mappedPages)
     return mappedPages
   } catch (error) {
     console.error('Error fetching pages:', error)
     throw error
+  }
+}
+
+export async function get_page_insights(pageId, since, until) {
+  try { 
+    const response = await api.get(`/api/pages/${pageId}/insights?since=${since}&until=${until}`)
+
+    const mappedInsights = response.data.map((insights) => ({
+      name : insights.name,
+      value : insights.value
+    }))
+
+    return mappedInsights
+  } catch (error) { 
+      console.error("Error fetching insights: ", error)
+      throw error
   }
 }
