@@ -109,7 +109,6 @@ export default function Home() {
     const fetchPages = async () => {
       try {
         const response = await get_pages();
-        console.log("Fetched pages for filter options:", response);
         if (response) {
           setFilterOptions(response);
         }
@@ -139,7 +138,7 @@ useEffect(() => {
           dateRange.until
         );
 
-        // Map insights to metrics
+        // Map insights to metrics 
         const updatedMetrics = {
           totalViews: insights.find((i) => i.name === 'page_media_view')?.value || 0,
           totalReach: insights.find((i) => i.name === 'page_impressions_unique')?.value || 0,
@@ -161,39 +160,66 @@ useEffect(() => {
   }, [dateRange]);
 
 
-  const handleDateRangeChange = (range) => {
-    console.log('Date range changed:', range)
+  const handleDateRangeChange = async (range) => {
+    console.log('Date range changed:', range);
     setDateRange(range);
-  }
+
+    if (!selectedFilter) {
+      console.warn('No filter selected. Skipping fetch.');
+      return;
+    }
+
+    setIsLoading(true); // Set loading to true before fetching
+    try {
+      console.log(
+        `Fetching metrics for ${selectedFilter.name} (ID: ${selectedFilter.id}) from ${range.since} to ${range.until}`
+      );
+      const insights = await get_page_insights(selectedFilter.id, range.since, range.until);
+
+      // Map insights to metrics
+      const updatedMetrics = {
+        totalViews: insights.find((i) => i.name === 'page_media_view')?.value || 0,
+        totalReach: insights.find((i) => i.name === 'page_impressions_unique')?.value || 0,
+        totalEngagement: insights.find((i) => i.name === 'page_post_engagements')?.value || 0,
+        totalSpend: insights.find((i) => i.name === 'total_spend')?.value || 0,
+      };
+
+      setMetrics(updatedMetrics); // Update metrics state
+    } catch (error) {
+      console.error('Failed to fetch insights:', error);
+      setMetrics(defaultMetrics); // Reset to default metrics on error
+    } finally {
+      setIsLoading(false); // Set loading to false after fetching is complete
+    }
+  };
 
   const handleFilterSelect = async (filterId) => {
-  const selected = filterOptions.find((option) => option.id === filterId); // Find the selected option by id
-  setSelectedFilter(selected);
+    const selected = filterOptions.find((option) => option.id === filterId); // Find the selected option by id
+    setSelectedFilter(selected);
 
-  if (!selected) return;
+    if (!selected) return;
 
-  console.log(`Fetching insights for ${selected.name} (ID: ${selected.id}) for the default 30-day range`);
+    console.log(`Fetching insights for ${selected.name} (ID: ${selected.id}) for the default 30-day range`);
 
-  setIsLoading(true);
-  try {
-    const insights = await get_page_insights(selected.id, dateRange.since, dateRange.until); // Call without date range
-    console.log('Fetched insights:', insights);
+    setIsLoading(true);
+    try {
+      const insights = await get_page_insights(selected.id, dateRange.since, dateRange.until); // Call without date range
 
-    // Map insights to metrics
-    const updatedMetrics = {
-      totalViews: insights.find((i) => i.name === 'page_media_view')?.value || 0,
-      totalReach: insights.find((i) => i.name === 'page_impressions_unique')?.value || 0,
-      totalEngagement: insights.find((i) => i.name === 'page_post_engagements')?.value || 0,
-      totalSpend: insights.find((i) => i.name === 'total_spend')?.value || 0,
-    };
+      // Map insights to metrics
+      const updatedMetrics = {
+        totalViews: insights.find((i) => i.name === 'page_media_view')?.value || 0,
+        totalReach: insights.find((i) => i.name === 'page_impressions_unique')?.value || 0,
+        totalEngagement: insights.find((i) => i.name === 'page_post_engagements')?.value || 0,
+        totalSpend: insights.find((i) => i.name === 'total_spend')?.value || 0,
+      };
 
-    setMetrics(updatedMetrics); // Update metrics state
-  } catch (error) {
-    console.error('Failed to fetch insights:', error);
-    setMetrics(defaultMetrics); // Reset to default metrics on error
-  } finally {
-    setIsLoading(false);
-  }
+      setMetrics(updatedMetrics); // Update metrics state
+    } catch (error) {
+      console.error('Failed to fetch insights:', error);
+      setMetrics(defaultMetrics); // Reset to default metrics on error
+    } finally {
+      setIsLoading(false);
+    }
 };
 
   const handlePlatformSelect = (platform) => {
