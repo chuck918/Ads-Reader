@@ -5,6 +5,7 @@ import ApexChart from '../../components/Chart'
 import Dropdown from '../../components/Dropdown'
 import LoadingIndicator from '../../components/LoadingIndicator'
 import { useSidebar } from '../../contexts/SidebarContext'
+import { useFilter } from '../../contexts/FilterContext'
 import { get_pages, get_page_insights } from '../../services/pages'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
@@ -74,8 +75,9 @@ const defaultChartDatas = {
 
 export default function Home() {
   const { toggleSidebar } = useSidebar()
+  const { selectedFilter, setSelectedFilter } = useFilter()
+
   const [filterOptions, setFilterOptions] = useState([])
-  const [selectedFilter, setSelectedFilter] = useState('All') 
   const [chartData, setChartData] = useState(defaultChartData);
   const [selectedPlatform, setSelectedPlatform] = useState(platformOptions[0])
   const [dateRange, setDateRange] = useState(() => {
@@ -443,5 +445,6 @@ useEffect(() => {
   </div>
 </div>
 </div>
+    </div>
   )
 }
