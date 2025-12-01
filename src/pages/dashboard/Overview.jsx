@@ -49,22 +49,26 @@ export default function Overview() {
 
 useEffect(() => {
   const loadPageData = async () => {
+
     if (!selectedFilter || selectedFilter === 'All') {
       setTableData(defaultTableData);
       return;
     }
 
     try {
-      let rawData = insightsData; // Use global insights data if available
-      console.log('Using global insights data:', rawData);
+      let rawData = null
 
+      if (insightsData) {
+        rawData = insightsData[1]; // Use global insights data if available
+        console.log('Using global insights data:', rawData);
+      }
+      
       if (!rawData) {
         console.log('Global insights data not available. Fetching from backend...');
         const responseData = await get_page_insights(selectedFilter.id, dateRange.since, dateRange.until); // Fetch from backend
         if (responseData) {
-          const [inisghts, rawData] = responseData; // Set rawData to the fetched data
-          console.log('Fetched insights data from backend:', rawData);
-          setInsightsData(rawData); // Update the global insights data
+       
+          setInsightsData(responseData); // Update the global insights data
         } else {
           console.warn('No valid data received from backend.'); 
           setTableData(defaultTableData);
@@ -79,7 +83,6 @@ useEffect(() => {
           const normalizedDate = new Date(value.end_time).toLocaleDateString();
 
           const existingRow = acc.find((row) => row.date === normalizedDate);
-
           if (existingRow) {
             // Add the metric value to the existing row
             if (metric.name === 'page_impressions_unique') {
