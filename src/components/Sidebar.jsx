@@ -40,9 +40,9 @@ export default function Sidebar({ onStateChange, onToggle }) {
   const isActive = (path) => location.pathname === path
 
   const menuItems = [
-    { path: '/home', icon: 'home', label: 'Home' },
+    { path: '/home', icon: 'monitoring', label: 'Dashboard' },
     { path: '/overview', icon: 'overview', label: 'Overview' },
-    { path: '/analytics', icon: 'monitoring', label: 'Dashboard' },
+    // { path: '/analytics', icon: 'monitoring', label: 'Dashboard' },
   ]
 
   const accountItems = [
